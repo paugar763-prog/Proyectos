@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registro de usuario</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="contenedor">
+      <section class="tarjeta">
+        <header class="encabezado">
+          <span class="etiqueta-superior">Aplicación Ruby</span>
+          <h1>Registro de usuario</h1>
+          <p>Complete los campos para mostrar o guardar la información.</p>
+        </header>
+
+        <% unless errores.empty? %>
+          <div class="mensaje error" role="alert">
+            <strong>Revise los siguientes datos:</strong>
+            <ul>
+              <% errores.each do |error| %>
+                <li><%= escapar(error) %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <% if aviso %>
+          <div class="mensaje exito" role="status"><%= escapar(aviso) %></div>
+        <% end %>
+
+        <form action="/procesar" method="post" class="formulario" novalidate>
+          <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input
+              id="nombre"
+              name="nombre"
+              type="text"
+              value="<%= escapar(valores[:nombre]) %>"
+              placeholder="Ejemplo: Ana Pérez"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="campo">
+            <label for="edad">Edad</label>
+            <input
+              id="edad"
+              name="edad"
+              type="text"
+              inputmode="numeric"
+              value="<%= escapar(valores[:edad]) %>"
+              placeholder="Ejemplo: 25"
+              required
+            >
+            <small>Ingrese únicamente números entre 1 y 120.</small>
+          </div>
+
+          <div class="campo">
+            <label for="correo">Correo electrónico</label>
+            <input
+              id="correo"
+              name="correo"
+              type="email"
+              value="<%= escapar(valores[:correo]) %>"
+              placeholder="Ejemplo: nombre@correo.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="acciones">
+            <button type="submit" name="accion" value="mostrar" class="principal">
+              Mostrar datos
+            </button>
+            <button type="submit" name="accion" value="guardar" class="secundario">
+              Guardar en TXT
+            </button>
+            <a href="/" class="limpiar">Limpiar</a>
+          </div>
+        </form>
+
+        <% if resultado %>
+          <section class="resultado" aria-live="polite">
+            <h2>Datos ingresados</h2>
+            <dl>
+              <div>
+                <dt>Nombre</dt>
+                <dd><%= escapar(resultado[:nombre]) %></dd>
+              </div>
+              <div>
+                <dt>Edad</dt>
+                <dd><%= escapar(resultado[:edad]) %> años</dd>
+              </div>
+              <div>
+                <dt>Correo</dt>
+                <dd><%= escapar(resultado[:correo]) %></dd>
+              </div>
+            </dl>
+          </section>
+        <% end %>
+      </section>
+    </main>
+  </body>
+</html>
+
